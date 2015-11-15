@@ -8,7 +8,8 @@ var config = {
   port: 9005,
   debBaseUrl: 'http://localhost',
   paths: {
-    
+    html: './src/*.html',
+    dist: './dist'
   }
 };
 
@@ -20,3 +21,16 @@ gulp.task('connect', function() {
     livereload: true
   });
 });
+
+gulp.task('open', ['connect'], function() {
+  gulp.src('dist/index.html')
+    .pipe(open({url:config.devBaseUrl + ":" + config.port + '/'}));
+});
+
+gulp.task('html', function() {
+  gulp.src(config.paths.html)
+    .pipe(gulp.dest(config.paths.dist))
+    .pipe(connect.reload());
+});
+
+gulp.task('default', ['html', 'open']);
